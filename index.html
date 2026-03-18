@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>烛灵·世界志</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0d0b08;
+    --bg2: #13100c;
+    --bg3: #1a1510;
+    --border: #2e2518;
+    --border2: #3d3020;
+    --amber: #c8922a;
+    --amber2: #e8b84b;
+    --amber3: #f5d07a;
+    --text: #e8d9b8;
+    --text2: #b8a880;
+    --text3: #7a6a4a;
+    --red: #c04040;
+    --green: #5a9060;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans SC', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(200,146,42,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 80% 90%, rgba(160,80,40,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border2);
+    position: relative;
+  }
+
+  .header::after {
+    content: '◈';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    padding: 0 12px;
+    color: var(--amber);
+    font-size: 14px;
+  }
+
+  .header-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--amber2);
+    text-shadow: 0 0 40px rgba(200,146,42,0.4);
+    margin-bottom: 6px;
+  }
+
+  .header-sub {
+    font-size: 0.78rem;
+    color: var(--text3);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  /* ── Status Bar ── */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    font-size: 0.78rem;
+    color: var(--text3);
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+    margin-right: 6px;
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  .status-dot.error { background: var(--red); box-shadow: 0 0 6px var(--red); animation: none; }
+  .status-dot.loading { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* ── Config Panel ── */
+  .config-panel {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .config-panel.open { display: flex; }
+
+  .config-title {
+    font-size: 0.78rem;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+    margin-bottom: 4px;
+  }
+
+  .config-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .config-label {
+    font-size: 0.72rem;
+    color: var(--text3);
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .config-note {
+    font-size: 0.72rem;
+    color: var(--text3);
+    line-height: 1.6;
+    padding: 8px 12px;
+    background: var(--bg3);
+    border-radius: 4px;
+    border-left: 2px solid var(--amber);
+  }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 7px 16px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-family: 'Noto Sans SC', sans-serif;
+    cursor: pointer;
+    border: 1px solid var(--border2);
+    background: var(--bg2);
+    color: var(--text2);
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .btn:hover { border-color: var(--amber); color: var(--amber2); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-primary {
+    background: var(--amber);
+    color: var(--bg);
+    border-color: var(--amber);
+    font-weight: 600;
+  }
+
+  .btn-primary:hover { background: var(--amber2); border-color: var(--amber2); color: var(--bg); }
+
+  .btn-danger { color: var(--red); }
+  .btn-danger:hover { border-color: var(--red); color: var(--red); }
+
+  .btn-config { color: var(--amber); border-color: var(--amber); }
+  .btn-config:hover { background: rgba(200,146,42,0.1); }
+
+  /* ── Layout ── */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sidebar-section {
+    font-size: 0.68rem;
+    color: var(--text3);
+    letter-spacing: 0.2em;
+    padding: 12px 10px 6px;
+    text-transform: uppercase;
+  }
+
+  .nav-item {
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--text2);
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+
+  .nav-item:hover { background: var(--bg2); color: var(--text); }
+  .nav-item.active { background: var(--bg3); border-color: var(--border2); color: var(--amber2); }
+  .nav-item .nav-icon { font-size: 0.9rem; width: 16px; text-align: center; }
+  .nav-item .nav-badge {
+    margin-left: auto;
+    font-size: 0.65rem;
+    background: var(--border2);
+    color: var(--text3);
+    padding: 1px 6px;
+    border-radius: 10px;
+  }
+
+  /* ── Entry Cards ── */
+  .content { display: flex; flex-direction: column; gap: 16px; }
+
+  .entry-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .entry-card:hover { border-color: var(--border2); }
+
+  .entry-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .entry-tag {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .tag-origin   { background: rgba(200,146,42,0.15); color: var(--amber2); }
+  .tag-race     { background: rgba(90,144,96,0.15);  color: #7aba88; }
+  .tag-mechanic { background: rgba(74,112,160,0.15); color: #7aaad8; }
+  .tag-history  { background: rgba(160,80,80,0.15);  color: #e08080; }
+  .tag-faction  { background: rgba(120,80,160,0.15); color: #c090e0; }
+  .tag-plan     { background: rgba(80,140,160,0.15); color: #70c0d8; }
+  .tag-char     { background: rgba(160,120,60,0.15); color: #d8a860; }
+
+  .entry-title { font-family: 'Noto Serif SC', serif; font-size: 0.95rem; color: var(--text); flex: 1; }
+  .entry-meta { font-size: 0.7rem; color: var(--text3); white-space: nowrap; }
+  .entry-toggle { color: var(--text3); font-size: 0.7rem; transition: transform 0.2s; }
+  .entry-toggle.open { transform: rotate(180deg); }
+
+  .entry-body {
+    padding: 0 16px 16px;
+    font-size: 0.84rem;
+    line-height: 1.9;
+    color: var(--text2);
+    border-top: 1px solid var(--border);
+    display: none;
+  }
+
+  .entry-body.open { display: block; }
+  .entry-body p { margin-bottom: 8px; }
+  .entry-body strong { color: var(--amber3); font-weight: 500; }
+  .entry-body em { color: var(--text); font-style: normal; }
+
+  .entry-edit {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .entry-edit.open { display: flex; }
+
+  .edit-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .edit-label {
+    font-size: 0.72rem;
+    color: var(--text3);
+    width: 50px;
+    flex-shrink: 0;
+    padding-top: 8px;
+  }
+
+  input[type="text"], select, textarea, input[type="password"] {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.82rem;
+    padding: 6px 10px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]:focus,
+  input[type="password"]:focus,
+  select:focus,
+  textarea:focus { border-color: var(--amber); }
+
+  input[type="text"], input[type="password"] { flex: 1; min-width: 120px; }
+  select { flex: 1; min-width: 100px; }
+  textarea { flex: 1; min-height: 100px; resize: vertical; line-height: 1.7; width: 100%; }
+
+  /* ── Add Panel ── */
+  .add-panel {
+    background: var(--bg2);
+    border: 1px dashed var(--border2);
+    border-radius: 6px;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .add-panel.open { display: flex; }
+  .add-panel-title { font-size: 0.8rem; color: var(--amber); letter-spacing: 0.1em; margin-bottom: 4px; }
+
+  /* ── States ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text3);
+    font-size: 0.85rem;
+    line-height: 2;
+  }
+
+  .empty-icon { font-size: 2rem; margin-bottom: 12px; opacity: 0.4; }
+
+  .loading-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text3);
+    font-size: 0.85rem;
+  }
+
+  .loading-spin {
+    display: inline-block;
+    font-size: 1.5rem;
+    animation: spin 1.5s linear infinite;
+    margin-bottom: 12px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--bg3);
+    border: 1px solid var(--amber);
+    color: var(--amber2);
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s;
+    pointer-events: none;
+    max-width: 300px;
+  }
+
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.error { border-color: var(--red); color: #e08080; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  @media (max-width: 640px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .sidebar { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+    .sidebar-section { display: none; }
+    .header-title { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="header-title">烛灵·世界志</div>
+    <div class="header-sub">Worldbuilding Archive · GitHub Pages Edition</div>
+  </div>
+
+  <div class="status-bar">
+    <div>
+      <span class="status-dot" id="statusDot"></span>
+      <span id="storageStatus">正在初始化…</span>
+    </div>
+    <div id="lastSaved" style="color:var(--text3)"></div>
+  </div>
+
+  <!-- GitHub 配置面板 -->
+  <div class="config-panel" id="configPanel">
+    <div class="config-title">⚙ GitHub 配置</div>
+    <div class="config-note">
+      填写你的 GitHub 信息后，编辑操作将直接提交到仓库的 <code>data.json</code>。<br>
+      Token 需要 <strong>repo</strong> 权限，仅存储在浏览器 localStorage 中，不会上传。
+    </div>
+    <div class="config-row">
+      <span class="config-label">用户名</span>
+      <input type="text" id="cfgOwner" placeholder="your-github-username">
+    </div>
+    <div class="config-row">
+      <span class="config-label">仓库名</span>
+      <input type="text" id="cfgRepo" placeholder="zhuling-worldbuilding">
+    </div>
+    <div class="config-row">
+      <span class="config-label">分支</span>
+      <input type="text" id="cfgBranch" placeholder="main">
+    </div>
+    <div class="config-row">
+      <span class="config-label">Token</span>
+      <input type="password" id="cfgToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+    </div>
+    <div class="config-row" style="justify-content:flex-end; gap:8px">
+      <button class="btn" onclick="toggleConfig()">取消</button>
+      <button class="btn btn-primary" onclick="saveConfig()">保存配置</button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="toggleAddPanel()">＋ 新增条目</button>
+    <button class="btn btn-config" onclick="toggleConfig()">⚙ GitHub 配置</button>
+    <button class="btn" onclick="reloadData()">↺ 刷新数据</button>
+    <button class="btn" onclick="exportData()">↓ 导出 JSON</button>
+  </div>
+
+  <div class="add-panel" id="addPanel">
+    <div class="add-panel-title">✦ 新增世界观条目</div>
+    <div class="edit-row">
+      <span class="edit-label">标题</span>
+      <input type="text" id="newTitle" placeholder="条目名称…">
+    </div>
+    <div class="edit-row">
+      <span class="edit-label">分类</span>
+      <select id="newCategory">
+        <option value="origin">起源</option>
+        <option value="race">种族</option>
+        <option value="mechanic">核心机制</option>
+        <option value="history">历史事件</option>
+        <option value="faction">势力</option>
+        <option value="plan">计划/谋略</option>
+        <option value="char">人物</option>
+      </select>
+      <input type="text" id="newEra" placeholder="纪元（如：纪元零年）" style="flex:1; min-width:120px">
+    </div>
+    <div class="edit-row">
+      <span class="edit-label">内容</span>
+      <textarea id="newContent" placeholder="条目详细内容…支持 &lt;strong&gt; HTML 标签"></textarea>
+    </div>
+    <div class="edit-row" style="justify-content:flex-end; gap:8px">
+      <button class="btn" onclick="toggleAddPanel()">取消</button>
+      <button class="btn btn-primary" onclick="addEntry()">保存条目</button>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="content" id="content">
+      <div class="loading-state">
+        <div class="loading-spin">◈</div>
+        <div>正在读取世界志…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── 配置 ──────────────────────────────────────────────────
+const DATA_FILE = 'data.json';
+
+const CATEGORY_CONFIG = {
+  origin:   { label: '起源',      icon: '◎', tagClass: 'tag-origin' },
+  race:     { label: '种族',      icon: '◈', tagClass: 'tag-race' },
+  mechanic: { label: '核心机制',  icon: '⬡', tagClass: 'tag-mechanic' },
+  history:  { label: '历史事件',  icon: '◇', tagClass: 'tag-history' },
+  faction:  { label: '势力',      icon: '⬟', tagClass: 'tag-faction' },
+  plan:     { label: '计划/谋略', icon: '◆', tagClass: 'tag-plan' },
+  char:     { label: '人物',      icon: '◉', tagClass: 'tag-char' }
+};
+
+let state = {
+  data: null,
+  filter: 'all',
+  editingId: null,
+  fileSha: null,   // GitHub 需要 SHA 来更新文件
+  cfg: null
+};
+
+// ── GitHub 配置 ───────────────────────────────────────────
+
+function loadConfig() {
+  try {
+    const raw = localStorage.getItem('zhuling_gh_config');
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function saveConfig() {
+  const cfg = {
+    owner:  document.getElementById('cfgOwner').value.trim(),
+    repo:   document.getElementById('cfgRepo').value.trim(),
+    branch: document.getElementById('cfgBranch').value.trim() || 'main',
+    token:  document.getElementById('cfgToken').value.trim()
+  };
+
+  if (!cfg.owner || !cfg.repo || !cfg.token) {
+    showToast('请填写用户名、仓库名和 Token', true);
+    return;
+  }
+
+  localStorage.setItem('zhuling_gh_config', JSON.stringify(cfg));
+  state.cfg = cfg;
+  toggleConfig();
+  showToast('配置已保存，正在重新加载数据…');
+  loadData();
+}
+
+function toggleConfig() {
+  const panel = document.getElementById('configPanel');
+  panel.classList.toggle('open');
+
+  if (panel.classList.contains('open') && state.cfg) {
+    document.getElementById('cfgOwner').value  = state.cfg.owner  || '';
+    document.getElementById('cfgRepo').value   = state.cfg.repo   || '';
+    document.getElementById('cfgBranch').value = state.cfg.branch || 'main';
+    document.getElementById('cfgToken').value  = state.cfg.token  || '';
+  }
+}
+
+// ── GitHub API ────────────────────────────────────────────
+
+function apiHeaders() {
+  return {
+    'Authorization': `token ${state.cfg.token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json'
+  };
+}
+
+function apiUrl(path) {
+  const { owner, repo } = state.cfg;
+  return `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+}
+
+async function fetchDataFromGitHub() {
+  const { branch } = state.cfg;
+  const res = await fetch(`${apiUrl(DATA_FILE)}?ref=${branch}`, {
+    headers: apiHeaders()
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || `HTTP ${res.status}`);
+  }
+
+  const json = await res.json();
+  state.fileSha = json.sha;
+  // 用 TextDecoder 正确处理 UTF-8 中文字符
+  const binary = atob(json.content.replace(/\n/g, ''));
+  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+  const text = new TextDecoder('utf-8').decode(bytes);
+  const content = JSON.parse(text);
+  return content;
+}
+
+async function pushDataToGitHub(data) {
+  if (!state.cfg) throw new Error('未配置 GitHub 信息');
+
+  data.lastModified = new Date().toISOString();
+  // 用 TextEncoder 正确处理 UTF-8 中文字符
+  const jsonStr = JSON.stringify(data, null, 2);
+  const bytes = new TextEncoder().encode(jsonStr);
+  const binary = Array.from(bytes).map(b => String.fromCharCode(b)).join('');
+  const content = btoa(binary);
+
+  const body = {
+    message: `update: worldbuilding data ${new Date().toLocaleString('zh-CN')}`,
+    content,
+    branch: state.cfg.branch
+  };
+
+  if (state.fileSha) body.sha = state.fileSha;
+
+  const res = await fetch(apiUrl(DATA_FILE), {
+    method: 'PUT',
+    headers: apiHeaders(),
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || `HTTP ${res.status}`);
+  }
+
+  const result = await res.json();
+  state.fileSha = result.content.sha;
+  return true;
+}
+
+// ── Init & Load ───────────────────────────────────────────
+
+async function init() {
+  state.cfg = loadConfig();
+
+  if (!state.cfg) {
+    setStatus('请先配置 GitHub 信息', true);
+    document.getElementById('configPanel').classList.add('open');
+    document.getElementById('content').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚙</div>
+        <div>请点击「⚙ GitHub 配置」填写仓库信息</div>
+        <div style="font-size:0.75rem;margin-top:6px">配置完成后数据将从 GitHub 实时读写</div>
+      </div>`;
+    return;
+  }
+
+  await loadData();
+}
+
+async function loadData() {
+  setStatus('正在从 GitHub 加载…', 'loading');
+  document.getElementById('content').innerHTML = `
+    <div class="loading-state">
+      <div class="loading-spin">◈</div>
+      <div>正在读取世界志…</div>
+    </div>`;
+
+  try {
+    const data = await fetchDataFromGitHub();
+    state.data = data;
+    setStatus('已从 GitHub 加载', false);
+    updateLastSaved(data.lastModified);
+    renderSidebar();
+    renderContent();
+  } catch (e) {
+    setStatus(`加载失败：${e.message}`, true);
+    document.getElementById('content').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠</div>
+        <div>无法读取数据：${e.message}</div>
+        <div style="font-size:0.75rem;margin-top:6px">请检查 GitHub 配置或网络连接</div>
+      </div>`;
+  }
+}
+
+async function reloadData() {
+  if (!state.cfg) { showToast('请先配置 GitHub 信息', true); return; }
+  await loadData();
+}
+
+// ── Save ──────────────────────────────────────────────────
+
+async function saveData() {
+  if (!state.cfg) { showToast('请先配置 GitHub 信息', true); return false; }
+  setStatus('正在提交到 GitHub…', 'loading');
+  try {
+    await pushDataToGitHub(state.data);
+    setStatus('已同步到 GitHub', false);
+    updateLastSaved(state.data.lastModified);
+    return true;
+  } catch (e) {
+    setStatus(`保存失败：${e.message}`, true);
+    showToast(`保存失败：${e.message}`, true);
+    return false;
+  }
+}
+
+// ── Status ────────────────────────────────────────────────
+
+function setStatus(msg, state_) {
+  document.getElementById('storageStatus').textContent = msg;
+  const dot = document.getElementById('statusDot');
+  dot.className = 'status-dot';
+  if (state_ === true) dot.classList.add('error');
+  else if (state_ === 'loading') dot.classList.add('loading');
+}
+
+function updateLastSaved(iso) {
+  if (!iso) return;
+  document.getElementById('lastSaved').textContent =
+    '最后修改：' + new Date(iso).toLocaleString('zh-CN');
+}
+
+// ── Render ────────────────────────────────────────────────
+
+function renderSidebar() {
+  const counts = { all: state.data.entries.length };
+  state.data.entries.forEach(e => {
+    counts[e.category] = (counts[e.category] || 0) + 1;
+  });
+
+  let html = `<div class="sidebar-section">分类筛选</div>
+    <div class="nav-item ${state.filter==='all'?'active':''}" onclick="setFilter('all')">
+      <span class="nav-icon">☰</span> 全部条目
+      <span class="nav-badge">${counts.all}</span>
+    </div>`;
+
+  Object.entries(CATEGORY_CONFIG).forEach(([key, cfg]) => {
+    if (!counts[key]) return;
+    html += `<div class="nav-item ${state.filter===key?'active':''}" onclick="setFilter('${key}')">
+      <span class="nav-icon">${cfg.icon}</span> ${cfg.label}
+      <span class="nav-badge">${counts[key]}</span>
+    </div>`;
+  });
+
+  document.getElementById('sidebar').innerHTML = html;
+}
+
+function renderContent() {
+  const entries = state.filter === 'all'
+    ? state.data.entries
+    : state.data.entries.filter(e => e.category === state.filter);
+
+  if (entries.length === 0) {
+    document.getElementById('content').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">◎</div>
+        <div>此分类暂无条目</div>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('content').innerHTML = entries.map(entry => {
+    const cfg = CATEGORY_CONFIG[entry.category] || CATEGORY_CONFIG.origin;
+    const isEditing = state.editingId === entry.id;
+    const bodyContent = entry.content.replace(/\n/g, '<br>');
+    const safeTitle = (entry.title || '').replace(/"/g, '&quot;');
+    const safeEra = (entry.era || '').replace(/"/g, '&quot;');
+
+    return `<div class="entry-card" id="card-${entry.id}">
+      <div class="entry-header" onclick="toggleEntry('${entry.id}')">
+        <span class="entry-tag ${cfg.tagClass}">${cfg.label}</span>
+        <span class="entry-title">${entry.title}</span>
+        <span class="entry-meta">${entry.era || ''}</span>
+        <span class="entry-toggle" id="toggle-${entry.id}">▼</span>
+      </div>
+      <div class="entry-body" id="body-${entry.id}">
+        <p>${bodyContent}</p>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="btn" style="font-size:0.75rem;padding:4px 12px"
+            onclick="startEdit('${entry.id}');event.stopPropagation()">编辑</button>
+          <button class="btn btn-danger" style="font-size:0.75rem;padding:4px 12px"
+            onclick="deleteEntry('${entry.id}');event.stopPropagation()">删除</button>
+        </div>
+      </div>
+      <div class="entry-edit ${isEditing?'open':''}" id="edit-${entry.id}">
+        <div class="edit-row">
+          <span class="edit-label">标题</span>
+          <input type="text" id="edit-title-${entry.id}" value="${safeTitle}">
+        </div>
+        <div class="edit-row">
+          <span class="edit-label">分类</span>
+          <select id="edit-cat-${entry.id}">
+            ${Object.entries(CATEGORY_CONFIG).map(([k,v]) =>
+              `<option value="${k}" ${entry.category===k?'selected':''}>${v.label}</option>`
+            ).join('')}
+          </select>
+          <input type="text" id="edit-era-${entry.id}" value="${safeEra}"
+            placeholder="纪元…" style="flex:1;min-width:100px">
+        </div>
+        <div class="edit-row">
+          <span class="edit-label">内容</span>
+          <textarea id="edit-content-${entry.id}">${escapeTA(entry.content)}</textarea>
+        </div>
+        <div class="edit-row" style="justify-content:flex-end;gap:8px">
+          <button class="btn" onclick="cancelEdit('${entry.id}')">取消</button>
+          <button class="btn btn-primary" onclick="saveEdit('${entry.id}')">保存并提交</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escapeTA(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Interactions ──────────────────────────────────────────
+
+function toggleEntry(id) {
+  document.getElementById('body-'+id).classList.toggle('open');
+  document.getElementById('toggle-'+id).classList.toggle('open');
+}
+
+function setFilter(cat) {
+  state.filter = cat;
+  renderSidebar();
+  renderContent();
+}
+
+function toggleAddPanel() {
+  const panel = document.getElementById('addPanel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open'))
+    setTimeout(() => document.getElementById('newTitle').focus(), 50);
+}
+
+async function addEntry() {
+  const title   = document.getElementById('newTitle').value.trim();
+  const content = document.getElementById('newContent').value.trim();
+  const category = document.getElementById('newCategory').value;
+  const era     = document.getElementById('newEra').value.trim();
+
+  if (!title)   { showToast('请填写标题', true); return; }
+  if (!content) { showToast('请填写内容', true); return; }
+
+  state.data.entries.push({ id: 'entry-' + Date.now(), category, era, title, content });
+
+  const ok = await saveData();
+  if (ok) {
+    showToast('条目已保存并提交到 GitHub');
+    document.getElementById('newTitle').value = '';
+    document.getElementById('newContent').value = '';
+    document.getElementById('newEra').value = '';
+    document.getElementById('addPanel').classList.remove('open');
+    renderSidebar();
+    renderContent();
+  } else {
+    state.data.entries.pop();
+  }
+}
+
+function startEdit(id) {
+  state.editingId = id;
+  renderContent();
+  document.getElementById('body-'+id).classList.add('open');
+  document.getElementById('toggle-'+id).classList.add('open');
+}
+
+function cancelEdit(id) {
+  state.editingId = null;
+  renderContent();
+}
+
+async function saveEdit(id) {
+  const idx = state.data.entries.findIndex(e => e.id === id);
+  if (idx === -1) return;
+
+  const original = { ...state.data.entries[idx] };
+
+  state.data.entries[idx] = {
+    id,
+    title:    document.getElementById('edit-title-'+id).value.trim(),
+    category: document.getElementById('edit-cat-'+id).value,
+    era:      document.getElementById('edit-era-'+id).value.trim(),
+    content:  document.getElementById('edit-content-'+id).value.trim()
+  };
+
+  const ok = await saveData();
+  if (ok) {
+    showToast('修改已提交到 GitHub');
+    state.editingId = null;
+    renderSidebar();
+    renderContent();
+  } else {
+    state.data.entries[idx] = original;
+  }
+}
+
+async function deleteEntry(id) {
+  if (!confirm('确认删除此条目？此操作不可撤销。')) return;
+
+  const backup = [...state.data.entries];
+  state.data.entries = state.data.entries.filter(e => e.id !== id);
+
+  const ok = await saveData();
+  if (ok) {
+    showToast('条目已删除并提交');
+    renderSidebar();
+    renderContent();
+  } else {
+    state.data.entries = backup;
+  }
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(state.data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'zhuling_worldbuilding.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('已导出 JSON 文件');
+}
+
+// ── Toast ─────────────────────────────────────────────────
+
+let toastTimer;
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Start ─────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
