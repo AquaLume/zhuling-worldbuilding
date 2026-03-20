@@ -28,7 +28,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Noto Sans SC', serif;
+    font-family: 'Noto Sans SC', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
   }
@@ -116,61 +116,103 @@
     animation: pulse 2s infinite;
   }
 
-  .status-dot.error { background: var(--red); box-shadow: 0 0 6px var(--red); animation: none; }
-  .status-dot.loading { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .status-dot.error   { background: var(--red);   box-shadow: 0 0 6px var(--red);   animation: none; }
+  .status-dot.loading { background: var(--amber);  box-shadow: 0 0 6px var(--amber); }
 
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-  /* ── Config Panel ── */
+  /* ── GitHub 配置面板 ── */
   .config-panel {
     background: var(--bg2);
     border: 1px solid var(--border2);
     border-radius: 6px;
-    padding: 16px 20px;
-    margin-bottom: 20px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
     display: none;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   .config-panel.open { display: flex; }
 
   .config-title {
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     color: var(--amber);
-    letter-spacing: 0.15em;
-    margin-bottom: 4px;
-  }
-
-  .config-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .config-label {
-    font-size: 0.72rem;
-    color: var(--text3);
-    width: 80px;
-    flex-shrink: 0;
+    letter-spacing: 0.12em;
   }
 
   .config-note {
     font-size: 0.72rem;
     color: var(--text3);
-    line-height: 1.6;
+    line-height: 1.7;
     padding: 8px 12px;
     background: var(--bg3);
     border-radius: 4px;
     border-left: 2px solid var(--amber);
   }
 
+  .config-note code {
+    background: var(--border2);
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-size: 0.82em;
+  }
+
+  /* ── 分类管理面板 ── */
+  .cat-panel {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .cat-panel.open { display: flex; }
+
+  .cat-panel-title {
+    font-size: 0.8rem;
+    color: var(--amber);
+    letter-spacing: 0.12em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cat-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .cat-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--bg3);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .cat-row.editing { border-color: var(--amber); }
+  .cat-row-icon    { font-size: 0.9rem; width: 20px; text-align: center; color: var(--text3); }
+  .cat-row-label   { flex: 1; font-size: 0.84rem; color: var(--text); }
+  .cat-row-count   { font-size: 0.7rem; color: var(--text3); background: var(--border2); padding: 1px 7px; border-radius: 10px; }
+  .cat-row-actions { display: flex; gap: 4px; }
+
+  .cat-add-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
   /* ── Toolbar ── */
   .toolbar {
     display: flex;
     gap: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     flex-wrap: wrap;
   }
 
@@ -205,18 +247,32 @@
   .btn-config { color: var(--amber); border-color: var(--amber); }
   .btn-config:hover { background: rgba(200,146,42,0.1); }
 
-  /* ── Layout ── */
+  .btn-sm {
+    padding: 3px 10px;
+    font-size: 0.72rem;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    background: var(--bg2);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+
+  .btn-sm:hover         { border-color: var(--amber); color: var(--amber2); }
+  .btn-sm.danger        { color: var(--red); }
+  .btn-sm.danger:hover  { border-color: var(--red); }
+  .btn-sm.primary       { background: var(--amber); color: var(--bg); border-color: var(--amber); font-weight: 600; }
+  .btn-sm.primary:hover { background: var(--amber2); }
+
+  /* ── Main Layout ── */
   .main-layout {
     display: grid;
     grid-template-columns: 220px 1fr;
     gap: 20px;
   }
 
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
+  .sidebar { display: flex; flex-direction: column; gap: 4px; }
 
   .sidebar-section {
     font-size: 0.68rem;
@@ -240,9 +296,10 @@
     user-select: none;
   }
 
-  .nav-item:hover { background: var(--bg2); color: var(--text); }
+  .nav-item:hover  { background: var(--bg2); color: var(--text); }
   .nav-item.active { background: var(--bg3); border-color: var(--border2); color: var(--amber2); }
-  .nav-item .nav-icon { font-size: 0.9rem; width: 16px; text-align: center; }
+  .nav-item .nav-icon  { font-size: 0.9rem; width: 16px; text-align: center; }
+
   .nav-item .nav-badge {
     margin-left: auto;
     font-size: 0.65rem;
@@ -290,9 +347,10 @@
   .tag-faction  { background: rgba(120,80,160,0.15); color: #c090e0; }
   .tag-plan     { background: rgba(80,140,160,0.15); color: #70c0d8; }
   .tag-char     { background: rgba(160,120,60,0.15); color: #d8a860; }
+  .tag-region   { background: rgba(60,140,120,0.15); color: #70d8b8; }
 
-  .entry-title { font-family: 'Noto Serif SC', serif; font-size: 0.95rem; color: var(--text); flex: 1; }
-  .entry-meta { font-size: 0.7rem; color: var(--text3); white-space: nowrap; }
+  .entry-title  { font-family: 'Noto Serif SC', serif; font-size: 0.95rem; color: var(--text); flex: 1; }
+  .entry-meta   { font-size: 0.7rem; color: var(--text3); white-space: nowrap; }
   .entry-toggle { color: var(--text3); font-size: 0.7rem; transition: transform 0.2s; }
   .entry-toggle.open { transform: rotate(180deg); }
 
@@ -305,10 +363,10 @@
     display: none;
   }
 
-  .entry-body.open { display: block; }
-  .entry-body p { margin-bottom: 8px; }
+  .entry-body.open   { display: block; }
+  .entry-body p      { margin-bottom: 8px; }
   .entry-body strong { color: var(--amber3); font-weight: 500; }
-  .entry-body em { color: var(--text); font-style: normal; }
+  .entry-body em     { color: var(--text); font-style: normal; }
 
   .entry-edit {
     padding: 12px 16px;
@@ -320,6 +378,22 @@
 
   .entry-edit.open { display: flex; }
 
+  /* ── Add Panel ── */
+  .add-panel {
+    background: var(--bg2);
+    border: 1px dashed var(--border2);
+    border-radius: 6px;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .add-panel.open    { display: flex; }
+  .add-panel-title   { font-size: 0.8rem; color: var(--amber); letter-spacing: 0.1em; margin-bottom: 4px; }
+
+  /* ── Form Elements ── */
   .edit-row {
     display: flex;
     gap: 8px;
@@ -335,7 +409,7 @@
     padding-top: 8px;
   }
 
-  input[type="text"], select, textarea, input[type="password"] {
+  input[type="text"], input[type="password"], select, textarea {
     background: var(--bg);
     border: 1px solid var(--border2);
     border-radius: 4px;
@@ -352,24 +426,17 @@
   select:focus,
   textarea:focus { border-color: var(--amber); }
 
-  input[type="text"], input[type="password"] { flex: 1; min-width: 120px; }
+  input[type="text"],
+  input[type="password"] { flex: 1; min-width: 120px; }
   select { flex: 1; min-width: 100px; }
-  textarea { flex: 1; min-height: 100px; resize: vertical; line-height: 1.7; width: 100%; }
 
-  /* ── Add Panel ── */
-  .add-panel {
-    background: var(--bg2);
-    border: 1px dashed var(--border2);
-    border-radius: 6px;
-    padding: 20px;
-    display: none;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 4px;
+  textarea {
+    flex: 1;
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.7;
+    width: 100%;
   }
-
-  .add-panel.open { display: flex; }
-  .add-panel-title { font-size: 0.8rem; color: var(--amber); letter-spacing: 0.1em; margin-bottom: 4px; }
 
   /* ── States ── */
   .empty-state {
@@ -417,16 +484,16 @@
     max-width: 300px;
   }
 
-  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.show  { opacity: 1; transform: translateY(0); }
   .toast.error { border-color: var(--red); color: #e08080; }
 
-  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar       { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
   @media (max-width: 640px) {
-    .main-layout { grid-template-columns: 1fr; }
-    .sidebar { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+    .main-layout  { grid-template-columns: 1fr; }
+    .sidebar      { flex-direction: row; flex-wrap: wrap; gap: 4px; }
     .sidebar-section { display: none; }
     .header-title { font-size: 1.8rem; }
   }
@@ -437,7 +504,7 @@
 <div class="container">
   <div class="header">
     <div class="header-title">烛灵·世界志</div>
-    <div class="header-sub">Worldbuilding Archive · GitHub Pages Edition</div>
+    <div class="header-sub">Worldbuilding Archive · GitHub Edition</div>
   </div>
 
   <div class="status-bar">
@@ -452,38 +519,55 @@
   <div class="config-panel" id="configPanel">
     <div class="config-title">⚙ GitHub 配置</div>
     <div class="config-note">
-      填写你的 GitHub 信息后，编辑操作将直接提交到仓库的 <code>data.json</code>。<br>
-      Token 需要 <strong>repo</strong> 权限，仅存储在浏览器 localStorage 中，不会上传。
+      填写 GitHub 信息后，所有编辑将直接提交到仓库的 <code>data.json</code>。<br>
+      Token 需要 <strong>repo</strong> 权限，仅存储在浏览器 localStorage 中，不会上传到任何服务器。
     </div>
-    <div class="config-row">
-      <span class="config-label">用户名</span>
+    <div class="edit-row">
+      <span class="edit-label">用户名</span>
       <input type="text" id="cfgOwner" placeholder="your-github-username">
     </div>
-    <div class="config-row">
-      <span class="config-label">仓库名</span>
+    <div class="edit-row">
+      <span class="edit-label">仓库名</span>
       <input type="text" id="cfgRepo" placeholder="zhuling-worldbuilding">
     </div>
-    <div class="config-row">
-      <span class="config-label">分支</span>
+    <div class="edit-row">
+      <span class="edit-label">分支</span>
       <input type="text" id="cfgBranch" placeholder="main">
     </div>
-    <div class="config-row">
-      <span class="config-label">Token</span>
+    <div class="edit-row">
+      <span class="edit-label">Token</span>
       <input type="password" id="cfgToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
     </div>
-    <div class="config-row" style="justify-content:flex-end; gap:8px">
+    <div class="edit-row" style="justify-content:flex-end; gap:8px">
       <button class="btn" onclick="toggleConfig()">取消</button>
       <button class="btn btn-primary" onclick="saveConfig()">保存配置</button>
     </div>
   </div>
 
+  <!-- 分类管理面板 -->
+  <div class="cat-panel" id="catPanel">
+    <div class="cat-panel-title">
+      <span>⊞ 分类管理</span>
+      <button class="btn-sm" onclick="toggleCatPanel()">关闭</button>
+    </div>
+    <div class="cat-list" id="catList"></div>
+    <div class="cat-add-row">
+      <input type="text" id="newCatLabel" placeholder="新分类名称，如：区域" style="flex:1;min-width:100px">
+      <input type="text" id="newCatIcon"  placeholder="图标" style="width:60px;flex:none">
+      <button class="btn-sm primary" onclick="addCategory()">＋ 新增分类</button>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
   <div class="toolbar">
     <button class="btn btn-primary" onclick="toggleAddPanel()">＋ 新增条目</button>
+    <button class="btn" onclick="toggleCatPanel()">⊞ 管理分类</button>
     <button class="btn btn-config" onclick="toggleConfig()">⚙ GitHub 配置</button>
-    <button class="btn" onclick="reloadData()">↺ 刷新数据</button>
+    <button class="btn" onclick="reloadData()">↺ 刷新</button>
     <button class="btn" onclick="exportData()">↓ 导出 JSON</button>
   </div>
 
+  <!-- 新增条目面板 -->
   <div class="add-panel" id="addPanel">
     <div class="add-panel-title">✦ 新增世界观条目</div>
     <div class="edit-row">
@@ -492,20 +576,12 @@
     </div>
     <div class="edit-row">
       <span class="edit-label">分类</span>
-      <select id="newCategory">
-        <option value="origin">起源</option>
-        <option value="race">种族</option>
-        <option value="mechanic">核心机制</option>
-        <option value="history">历史事件</option>
-        <option value="faction">势力</option>
-        <option value="plan">计划/谋略</option>
-        <option value="char">人物</option>
-      </select>
+      <select id="newCategory"></select>
       <input type="text" id="newEra" placeholder="纪元（如：纪元零年）" style="flex:1; min-width:120px">
     </div>
     <div class="edit-row">
       <span class="edit-label">内容</span>
-      <textarea id="newContent" placeholder="条目详细内容…支持 &lt;strong&gt; HTML 标签"></textarea>
+      <textarea id="newContent" placeholder="条目详细内容…支持 &lt;strong&gt;粗体&lt;/strong&gt; HTML 标签"></textarea>
     </div>
     <div class="edit-row" style="justify-content:flex-end; gap:8px">
       <button class="btn" onclick="toggleAddPanel()">取消</button>
@@ -527,7 +603,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── 配置 ──────────────────────────────────────────────────
+// ── 常量 ──────────────────────────────────────────────────
 const DATA_FILE = 'data.json';
 
 const CATEGORY_CONFIG = {
@@ -537,16 +613,47 @@ const CATEGORY_CONFIG = {
   history:  { label: '历史事件',  icon: '◇', tagClass: 'tag-history' },
   faction:  { label: '势力',      icon: '⬟', tagClass: 'tag-faction' },
   plan:     { label: '计划/谋略', icon: '◆', tagClass: 'tag-plan' },
-  char:     { label: '人物',      icon: '◉', tagClass: 'tag-char' }
+  char:     { label: '人物',      icon: '◉', tagClass: 'tag-char' },
+  region:   { label: '区域',      icon: '◬', tagClass: 'tag-region' }
 };
+
+const TAG_COLORS = [
+  { bg: 'rgba(200,146,42,0.15)',  color: '#e8b84b' },
+  { bg: 'rgba(90,144,96,0.15)',   color: '#7aba88' },
+  { bg: 'rgba(74,112,160,0.15)',  color: '#7aaad8' },
+  { bg: 'rgba(160,80,80,0.15)',   color: '#e08080' },
+  { bg: 'rgba(120,80,160,0.15)',  color: '#c090e0' },
+  { bg: 'rgba(80,140,160,0.15)',  color: '#70c0d8' },
+  { bg: 'rgba(160,120,60,0.15)',  color: '#d8a860' },
+  { bg: 'rgba(60,140,120,0.15)',  color: '#70d8b8' },
+  { bg: 'rgba(160,80,140,0.15)',  color: '#d870c0' },
+  { bg: 'rgba(100,160,60,0.15)',  color: '#90d860' },
+];
 
 let state = {
   data: null,
   filter: 'all',
   editingId: null,
-  fileSha: null,   // GitHub 需要 SHA 来更新文件
+  editingCatKey: null,
+  fileSha: null,
   cfg: null
 };
+
+// ── 分类工具 ──────────────────────────────────────────────
+
+function getCatConfig() {
+  const custom = state.data && state.data.customCategories ? state.data.customCategories : {};
+  return Object.assign({}, CATEGORY_CONFIG, custom);
+}
+
+function injectCatStyle(key, bg, color) {
+  const styleId = 'dyn-tag-' + key;
+  if (document.getElementById(styleId)) return;
+  const s = document.createElement('style');
+  s.id = styleId;
+  s.textContent = `.tag-${key} { background: ${bg}; color: ${color}; }`;
+  document.head.appendChild(s);
+}
 
 // ── GitHub 配置 ───────────────────────────────────────────
 
@@ -573,7 +680,7 @@ function saveConfig() {
   localStorage.setItem('zhuling_gh_config', JSON.stringify(cfg));
   state.cfg = cfg;
   toggleConfig();
-  showToast('配置已保存，正在重新加载数据…');
+  showToast('配置已保存，正在加载数据…');
   loadData();
 }
 
@@ -600,43 +707,38 @@ function apiHeaders() {
 }
 
 function apiUrl(path) {
-  const { owner, repo } = state.cfg;
-  return `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  return `https://api.github.com/repos/${state.cfg.owner}/${state.cfg.repo}/contents/${path}`;
 }
 
-async function fetchDataFromGitHub() {
-  const { branch } = state.cfg;
-  const res = await fetch(`${apiUrl(DATA_FILE)}?ref=${branch}`, {
+async function fetchFromGitHub() {
+  const res = await fetch(`${apiUrl(DATA_FILE)}?ref=${state.cfg.branch}`, {
     headers: apiHeaders()
   });
 
   if (!res.ok) {
-    const err = await res.json();
+    const err = await res.json().catch(() => ({}));
     throw new Error(err.message || `HTTP ${res.status}`);
   }
 
   const json = await res.json();
   state.fileSha = json.sha;
-  // 用 TextDecoder 正确处理 UTF-8 中文字符
+
+  // UTF-8 安全解码
   const binary = atob(json.content.replace(/\n/g, ''));
-  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-  const text = new TextDecoder('utf-8').decode(bytes);
-  const content = JSON.parse(text);
-  return content;
+  const bytes  = Uint8Array.from(binary, c => c.charCodeAt(0));
+  return JSON.parse(new TextDecoder('utf-8').decode(bytes));
 }
 
-async function pushDataToGitHub(data) {
-  if (!state.cfg) throw new Error('未配置 GitHub 信息');
-
+async function pushToGitHub(data) {
   data.lastModified = new Date().toISOString();
-  // 用 TextEncoder 正确处理 UTF-8 中文字符
+
   const jsonStr = JSON.stringify(data, null, 2);
-  const bytes = new TextEncoder().encode(jsonStr);
-  const binary = Array.from(bytes).map(b => String.fromCharCode(b)).join('');
+  const bytes   = new TextEncoder().encode(jsonStr);
+  const binary  = Array.from(bytes).map(b => String.fromCharCode(b)).join('');
   const content = btoa(binary);
 
   const body = {
-    message: `update: worldbuilding data ${new Date().toLocaleString('zh-CN')}`,
+    message: `update: worldbuilding ${new Date().toLocaleString('zh-CN')}`,
     content,
     branch: state.cfg.branch
   };
@@ -650,7 +752,7 @@ async function pushDataToGitHub(data) {
   });
 
   if (!res.ok) {
-    const err = await res.json();
+    const err = await res.json().catch(() => ({}));
     throw new Error(err.message || `HTTP ${res.status}`);
   }
 
@@ -688,10 +790,9 @@ async function loadData() {
     </div>`;
 
   try {
-    const data = await fetchDataFromGitHub();
-    state.data = data;
-    setStatus('已从 GitHub 加载', false);
-    updateLastSaved(data.lastModified);
+    state.data = await fetchFromGitHub();
+    setStatus('已同步 GitHub', false);
+    updateLastSaved(state.data.lastModified);
     renderSidebar();
     renderContent();
   } catch (e) {
@@ -715,9 +816,10 @@ async function reloadData() {
 async function saveData() {
   if (!state.cfg) { showToast('请先配置 GitHub 信息', true); return false; }
   setStatus('正在提交到 GitHub…', 'loading');
+
   try {
-    await pushDataToGitHub(state.data);
-    setStatus('已同步到 GitHub', false);
+    await pushToGitHub(state.data);
+    setStatus('已同步 GitHub', false);
     updateLastSaved(state.data.lastModified);
     return true;
   } catch (e) {
@@ -729,12 +831,12 @@ async function saveData() {
 
 // ── Status ────────────────────────────────────────────────
 
-function setStatus(msg, state_) {
+function setStatus(msg, stateVal) {
   document.getElementById('storageStatus').textContent = msg;
   const dot = document.getElementById('statusDot');
   dot.className = 'status-dot';
-  if (state_ === true) dot.classList.add('error');
-  else if (state_ === 'loading') dot.classList.add('loading');
+  if (stateVal === true)       dot.classList.add('error');
+  else if (stateVal === 'loading') dot.classList.add('loading');
 }
 
 function updateLastSaved(iso) {
@@ -751,15 +853,17 @@ function renderSidebar() {
     counts[e.category] = (counts[e.category] || 0) + 1;
   });
 
+  const catCfg = getCatConfig();
+
   let html = `<div class="sidebar-section">分类筛选</div>
-    <div class="nav-item ${state.filter==='all'?'active':''}" onclick="setFilter('all')">
+    <div class="nav-item ${state.filter === 'all' ? 'active' : ''}" onclick="setFilter('all')">
       <span class="nav-icon">☰</span> 全部条目
       <span class="nav-badge">${counts.all}</span>
     </div>`;
 
-  Object.entries(CATEGORY_CONFIG).forEach(([key, cfg]) => {
+  Object.entries(catCfg).forEach(([key, cfg]) => {
     if (!counts[key]) return;
-    html += `<div class="nav-item ${state.filter===key?'active':''}" onclick="setFilter('${key}')">
+    html += `<div class="nav-item ${state.filter === key ? 'active' : ''}" onclick="setFilter('${key}')">
       <span class="nav-icon">${cfg.icon}</span> ${cfg.label}
       <span class="nav-badge">${counts[key]}</span>
     </div>`;
@@ -769,6 +873,15 @@ function renderSidebar() {
 }
 
 function renderContent() {
+  const catCfg = getCatConfig();
+
+  // 注入自定义分类样式
+  if (state.data.customCategories) {
+    Object.entries(state.data.customCategories).forEach(([key, cfg]) => {
+      if (cfg._bg && cfg._color) injectCatStyle(key, cfg._bg, cfg._color);
+    });
+  }
+
   const entries = state.filter === 'all'
     ? state.data.entries
     : state.data.entries.filter(e => e.category === state.filter);
@@ -778,16 +891,21 @@ function renderContent() {
       <div class="empty-state">
         <div class="empty-icon">◎</div>
         <div>此分类暂无条目</div>
+        <div style="font-size:0.75rem;margin-top:6px">点击「新增条目」开始记录</div>
       </div>`;
     return;
   }
 
   document.getElementById('content').innerHTML = entries.map(entry => {
-    const cfg = CATEGORY_CONFIG[entry.category] || CATEGORY_CONFIG.origin;
-    const isEditing = state.editingId === entry.id;
-    const bodyContent = entry.content.replace(/\n/g, '<br>');
-    const safeTitle = (entry.title || '').replace(/"/g, '&quot;');
-    const safeEra = (entry.era || '').replace(/"/g, '&quot;');
+    const cfg      = catCfg[entry.category] || catCfg.origin;
+    const isEdit   = state.editingId === entry.id;
+    const safeTitle = entry.title.replace(/"/g, '&quot;');
+    const safeEra   = (entry.era || '').replace(/"/g, '&quot;');
+    const body      = entry.content.replace(/\n/g, '<br>');
+
+    const catOptions = Object.entries(catCfg)
+      .map(([k, v]) => `<option value="${k}" ${entry.category === k ? 'selected' : ''}>${v.label}</option>`)
+      .join('');
 
     return `<div class="entry-card" id="card-${entry.id}">
       <div class="entry-header" onclick="toggleEntry('${entry.id}')">
@@ -797,7 +915,7 @@ function renderContent() {
         <span class="entry-toggle" id="toggle-${entry.id}">▼</span>
       </div>
       <div class="entry-body" id="body-${entry.id}">
-        <p>${bodyContent}</p>
+        <p>${body}</p>
         <div style="margin-top:12px;display:flex;gap:8px">
           <button class="btn" style="font-size:0.75rem;padding:4px 12px"
             onclick="startEdit('${entry.id}');event.stopPropagation()">编辑</button>
@@ -805,20 +923,24 @@ function renderContent() {
             onclick="deleteEntry('${entry.id}');event.stopPropagation()">删除</button>
         </div>
       </div>
-      <div class="entry-edit ${isEditing?'open':''}" id="edit-${entry.id}">
+      <div class="entry-edit ${isEdit ? 'open' : ''}" id="edit-${entry.id}">
         <div class="edit-row">
           <span class="edit-label">标题</span>
           <input type="text" id="edit-title-${entry.id}" value="${safeTitle}">
         </div>
         <div class="edit-row">
           <span class="edit-label">分类</span>
-          <select id="edit-cat-${entry.id}">
-            ${Object.entries(CATEGORY_CONFIG).map(([k,v]) =>
-              `<option value="${k}" ${entry.category===k?'selected':''}>${v.label}</option>`
-            ).join('')}
+          <select id="edit-cat-${entry.id}" onchange="previewCatChange('${entry.id}')">
+            ${catOptions}
           </select>
           <input type="text" id="edit-era-${entry.id}" value="${safeEra}"
             placeholder="纪元…" style="flex:1;min-width:100px">
+        </div>
+        <div class="edit-row" id="edit-cat-hint-${entry.id}" style="display:none">
+          <span class="edit-label"></span>
+          <span style="font-size:0.72rem;color:var(--amber);padding-top:2px">
+            ⚠ 保存后此条目将移至新分类，当前筛选视图中将不再显示
+          </span>
         </div>
         <div class="edit-row">
           <span class="edit-label">内容</span>
@@ -834,14 +956,14 @@ function renderContent() {
 }
 
 function escapeTA(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ── Interactions ──────────────────────────────────────────
+// ── 交互 ──────────────────────────────────────────────────
 
 function toggleEntry(id) {
-  document.getElementById('body-'+id).classList.toggle('open');
-  document.getElementById('toggle-'+id).classList.toggle('open');
+  document.getElementById('body-' + id).classList.toggle('open');
+  document.getElementById('toggle-' + id).classList.toggle('open');
 }
 
 function setFilter(cat) {
@@ -853,15 +975,19 @@ function setFilter(cat) {
 function toggleAddPanel() {
   const panel = document.getElementById('addPanel');
   panel.classList.toggle('open');
-  if (panel.classList.contains('open'))
+  if (panel.classList.contains('open')) {
+    const sel = document.getElementById('newCategory');
+    sel.innerHTML = Object.entries(getCatConfig())
+      .map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('');
     setTimeout(() => document.getElementById('newTitle').focus(), 50);
+  }
 }
 
 async function addEntry() {
-  const title   = document.getElementById('newTitle').value.trim();
-  const content = document.getElementById('newContent').value.trim();
+  const title    = document.getElementById('newTitle').value.trim();
+  const content  = document.getElementById('newContent').value.trim();
   const category = document.getElementById('newCategory').value;
-  const era     = document.getElementById('newEra').value.trim();
+  const era      = document.getElementById('newEra').value.trim();
 
   if (!title)   { showToast('请填写标题', true); return; }
   if (!content) { showToast('请填写内容', true); return; }
@@ -871,9 +997,9 @@ async function addEntry() {
   const ok = await saveData();
   if (ok) {
     showToast('条目已保存并提交到 GitHub');
-    document.getElementById('newTitle').value = '';
+    document.getElementById('newTitle').value   = '';
     document.getElementById('newContent').value = '';
-    document.getElementById('newEra').value = '';
+    document.getElementById('newEra').value     = '';
     document.getElementById('addPanel').classList.remove('open');
     renderSidebar();
     renderContent();
@@ -885,8 +1011,8 @@ async function addEntry() {
 function startEdit(id) {
   state.editingId = id;
   renderContent();
-  document.getElementById('body-'+id).classList.add('open');
-  document.getElementById('toggle-'+id).classList.add('open');
+  document.getElementById('body-' + id).classList.add('open');
+  document.getElementById('toggle-' + id).classList.add('open');
 }
 
 function cancelEdit(id) {
@@ -902,10 +1028,10 @@ async function saveEdit(id) {
 
   state.data.entries[idx] = {
     id,
-    title:    document.getElementById('edit-title-'+id).value.trim(),
-    category: document.getElementById('edit-cat-'+id).value,
-    era:      document.getElementById('edit-era-'+id).value.trim(),
-    content:  document.getElementById('edit-content-'+id).value.trim()
+    title:    document.getElementById('edit-title-' + id).value.trim(),
+    category: document.getElementById('edit-cat-' + id).value,
+    era:      document.getElementById('edit-era-' + id).value.trim(),
+    content:  document.getElementById('edit-content-' + id).value.trim()
   };
 
   const ok = await saveData();
@@ -935,15 +1061,145 @@ async function deleteEntry(id) {
   }
 }
 
+function previewCatChange(id) {
+  const entry = state.data.entries.find(e => e.id === id);
+  if (!entry) return;
+  const newCat = document.getElementById('edit-cat-' + id).value;
+  const hint   = document.getElementById('edit-cat-hint-' + id);
+  if (hint) hint.style.display = (newCat !== entry.category && state.filter !== 'all') ? 'flex' : 'none';
+}
+
 function exportData() {
   const blob = new Blob([JSON.stringify(state.data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'zhuling_worldbuilding.json';
-  a.click();
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'zhuling_worldbuilding.json'; a.click();
   URL.revokeObjectURL(url);
   showToast('已导出 JSON 文件');
+}
+
+// ── 分类管理 ──────────────────────────────────────────────
+
+function toggleCatPanel() {
+  const panel = document.getElementById('catPanel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) renderCatList();
+}
+
+function renderCatList() {
+  const catCfg = getCatConfig();
+  const counts = {};
+  state.data.entries.forEach(e => { counts[e.category] = (counts[e.category] || 0) + 1; });
+  const custom = state.data.customCategories || {};
+
+  document.getElementById('catList').innerHTML = Object.entries(catCfg).map(([key, cfg]) => {
+    const isCustom  = !!custom[key];
+    const isEditing = state.editingCatKey === key;
+    const count     = counts[key] || 0;
+
+    if (isEditing) {
+      return `<div class="cat-row editing">
+        <span class="cat-row-icon">${cfg.icon}</span>
+        <input type="text" id="cedit-label-${key}" value="${cfg.label}" style="flex:1;min-width:80px;padding:3px 8px">
+        <input type="text" id="cedit-icon-${key}"  value="${cfg.icon}"  style="width:48px;flex:none;padding:3px 8px;text-align:center">
+        <div class="cat-row-actions">
+          <button class="btn-sm primary" onclick="saveCatEdit('${key}')">保存</button>
+          <button class="btn-sm" onclick="cancelCatEdit()">取消</button>
+        </div>
+      </div>`;
+    }
+
+    return `<div class="cat-row">
+      <span class="cat-row-icon">${cfg.icon}</span>
+      <span class="cat-row-label">${cfg.label}</span>
+      <span class="cat-row-count">${count} 条</span>
+      <div class="cat-row-actions">
+        <button class="btn-sm" onclick="startCatEdit('${key}')">重命名</button>
+        ${isCustom ? `<button class="btn-sm danger" onclick="deleteCategory('${key}', ${count})">删除</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function startCatEdit(key) {
+  state.editingCatKey = key;
+  renderCatList();
+  setTimeout(() => document.getElementById('cedit-label-' + key)?.focus(), 30);
+}
+
+function cancelCatEdit() {
+  state.editingCatKey = null;
+  renderCatList();
+}
+
+async function saveCatEdit(key) {
+  const newLabel = document.getElementById('cedit-label-' + key).value.trim();
+  const newIcon  = document.getElementById('cedit-icon-' + key).value.trim() || '◌';
+  if (!newLabel) { showToast('分类名称不能为空', true); return; }
+
+  if (!state.data.customCategories) state.data.customCategories = {};
+  const custom = state.data.customCategories;
+
+  if (custom[key]) {
+    custom[key].label = newLabel;
+    custom[key].icon  = newIcon;
+  } else {
+    custom[key] = { label: newLabel, icon: newIcon, tagClass: 'tag-' + key, _builtin_override: true };
+  }
+
+  const ok = await saveData();
+  if (ok) {
+    showToast(`分类"${newLabel}"已更新`);
+    state.editingCatKey = null;
+    renderCatList();
+    renderSidebar();
+    renderContent();
+  }
+}
+
+async function addCategory() {
+  const label = document.getElementById('newCatLabel').value.trim();
+  const icon  = document.getElementById('newCatIcon').value.trim() || '◌';
+  if (!label) { showToast('请填写分类名称', true); return; }
+
+  if (!state.data.customCategories) state.data.customCategories = {};
+  const key      = 'cat_' + Date.now();
+  const colorIdx = Object.keys(state.data.customCategories).length % TAG_COLORS.length;
+  const { bg, color } = TAG_COLORS[colorIdx];
+
+  state.data.customCategories[key] = { label, icon, tagClass: 'tag-' + key, _bg: bg, _color: color };
+  injectCatStyle(key, bg, color);
+
+  const ok = await saveData();
+  if (ok) {
+    showToast(`分类"${label}"已创建`);
+    document.getElementById('newCatLabel').value = '';
+    document.getElementById('newCatIcon').value  = '';
+    renderCatList();
+    renderSidebar();
+    renderContent();
+  } else {
+    delete state.data.customCategories[key];
+  }
+}
+
+async function deleteCategory(key, count) {
+  const msg = count > 0
+    ? `分类下还有 ${count} 条条目，删除后将归入「起源」分类。确认删除？`
+    : '确认删除此分类？';
+  if (!confirm(msg)) return;
+
+  if (count > 0) state.data.entries.forEach(e => { if (e.category === key) e.category = 'origin'; });
+  delete state.data.customCategories[key];
+  if (state.filter === key) state.filter = 'all';
+
+  const ok = await saveData();
+  if (ok) {
+    showToast('分类已删除');
+    renderCatList();
+    renderSidebar();
+    renderContent();
+  }
 }
 
 // ── Toast ─────────────────────────────────────────────────
