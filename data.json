@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastModified": "2026-03-20T09:48:51.995Z",
+  "lastModified": "2026-03-31T06:14:03.431Z",
   "entries": [
     {
       "id": "origin-1",
@@ -149,6 +149,13 @@
       "icon": "◆",
       "tagClass": "tag-plan",
       "_builtin_override": true
+    },
+    "cat_1774937643430": {
+      "label": "世界背景",
+      "icon": "◌",
+      "tagClass": "tag-cat_1774937643430",
+      "_bg": "rgba(90,144,96,0.15)",
+      "_color": "#7aba88"
     }
   }
 }
