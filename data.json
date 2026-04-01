@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastModified": "2026-04-01T06:25:32.157Z",
+  "lastModified": "2026-04-01T06:26:17.366Z",
   "entries": [
     {
       "id": "origin-1",
@@ -53,7 +53,7 @@
     },
     {
       "id": "plan-1",
-      "category": "plan",
+      "category": "origin",
       "era": "纪元400-500余年",
       "title": "终途计划",
       "content": "第四代烛芯发现“初响”是来自另一世界的投影，而非古文明遗迹。\n\n第五代烛芯发起“<strong>终途计划</strong>”：将烛灵历史文明浓缩刻入宏伟石碑，寄回给那个母亲文明（华夏）。\n\n核心难题：<em>这封信该如何寄出？</em>\n\n第五代烛芯推断：若诞生初响的文明能冲破壁障，或许也可将终途石碑投影回那个世界。古烛灵方面亦有独立动向。"
@@ -186,12 +186,6 @@
     }
   ],
   "customCategories": {
-    "plan": {
-      "label": "世界行动",
-      "icon": "◆",
-      "tagClass": "tag-plan",
-      "_builtin_override": true
-    },
     "cat_1774937643430": {
       "label": "世界背景",
       "icon": "◌",
