@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastModified": "2026-04-01T06:25:00.444Z",
+  "lastModified": "2026-04-01T06:25:11.413Z",
   "entries": [
     {
       "id": "origin-1",
@@ -168,6 +168,13 @@
       "category": "region",
       "era": "",
       "title": "难民聚落点",
+      "content": "1"
+    },
+    {
+      "id": "entry-1775024711413",
+      "category": "region",
+      "era": "",
+      "title": "明烛山",
       "content": "1"
     }
   ],
